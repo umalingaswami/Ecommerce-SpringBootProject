@@ -38,16 +38,11 @@
         <h4>Welcome ${ username } </h4>
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/}" href="#">CART</a>
-                </li>
-                 <li class="nav-item active">
-                    <a class="nav-link" href="profileDisplay" >Profile</a>
-                </li>
+                <li class="nav-item active"><a class="nav-link" href="/user">HomePage</a></li>
+                <li class="nav-item active"><a class="nav-link" href="/user/carts">Cart</a>
                 <li class="nav-item active">
                     <a class="nav-link" sec:authorize="isAuthenticated()" href="logout">Logout</a>
                 </li>
-               
             </ul>
 
         </div>
@@ -95,7 +90,8 @@
               <h5 class="card-text">Category: ${product.category.name}</h5>
               <h5 class="card-text">Price: ${product.price}</h5>
               <p class="card-text">Description: ${product.description}</p>
-              <a href="#" class="btn btn-primary">Add to Cart</a>
+              <a href="/user/products/addtocart?id=${product.id}" class="btn btn-primary">Add to Cart</a>
+
             </div>
           </div>
         </div> </c:forEach>

@@ -15,6 +15,11 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 import com.jtspringproject.JtSpringProject.services.cartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,23 @@ import com.jtspringproject.JtSpringProject.services.productService;
 import com.jtspringproject.JtSpringProject.services.cartService;
 
 
+import com.jtspringproject.JtSpringProject.models.Cart;
+import com.jtspringproject.JtSpringProject.models.Product;
+import com.jtspringproject.JtSpringProject.models.User;
+import com.jtspringproject.JtSpringProject.services.cartService;
+import com.jtspringproject.JtSpringProject.services.productService;
+import com.jtspringproject.JtSpringProject.services.userService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 public class UserController{
@@ -37,6 +59,9 @@ public class UserController{
 
 	@Autowired
 	private productService productService;
+
+	@Autowired
+	private cartService cartService;
 
 	@GetMapping("/register")
 	public String registerUser()
@@ -49,38 +74,43 @@ public class UserController{
 	{
 		return "buy";
 	}
-	
 
-	@GetMapping("/")
+
+	@GetMapping({"/", "/login"})
 	public String userlogin(Model model) {
-		
 		return "userLogin";
 	}
-	@RequestMapping(value = "userloginvalidate", method = RequestMethod.POST)
-	public ModelAndView userlogin(@RequestParam("username") String username, @RequestParam("password") String pass, Model model, HttpServletResponse res) {
 
-		System.out.println(pass);
+	@GetMapping("/user")
+	public ModelAndView getHomePage() {
+		ModelAndView mv = new ModelAndView("index");
+		List<Product> products = productService.getProducts();
+		mv.addObject("products", products);
+		return mv;
+	}
+
+	@RequestMapping(value = "userloginvalidate", method = RequestMethod.POST)
+	public String userlogin(@RequestParam("username") String username, @RequestParam("password") String pass, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		User u = this.userService.checkLogin(username, pass);
 
 		if (u != null && u.getUsername() != null && u.getUsername().equals(username)) {
-			res.addCookie(new Cookie("username", u.getUsername()));
-			ModelAndView mView = new ModelAndView("index");
-			mView.addObject("user", u);
+			HttpSession session = request.getSession();
+			session.setAttribute("user", u);
 
+			response.addCookie(new Cookie("username", u.getUsername()));
+
+			redirectAttributes.addFlashAttribute("user", u);
 			List<Product> products = this.productService.getProducts();
+			redirectAttributes.addFlashAttribute("products", products);
 
-			if (products.isEmpty()) {
-				mView.addObject("msg", "No products are available");
-			} else {
-				mView.addObject("products", products);
-			}
-			return mView;
+			return "redirect:/user";
 		} else {
-			ModelAndView mView = new ModelAndView("userLogin");
-			mView.addObject("msg", "Please enter correct email and password");
-			return mView;
+			redirectAttributes.addFlashAttribute("msg", "Please enter correct email and password");
+			return "redirect:/";
 		}
 	}
+
+
 
 
 	@GetMapping("/user/products")
@@ -144,9 +174,100 @@ public class UserController{
 			list.add(25);
 			mv.addObject("marks",list);
 			return mv;
-			
-			
 		}
+
+/*
+	@GetMapping("user/carts")
+	public ModelAndView getCarts() {
+		ModelAndView mv = new ModelAndView("cartproduct");
+		mv.addObject("carts", cartService.getCarts());
+		return mv;
+	}
+*/
+
+	@PostMapping("/user/carts/add")
+	public String addCart(@ModelAttribute Cart cart) {
+		System.out.println("Running @PostMapping(\"/user/carts/add\")\n" +
+				"\tpublic String addCart");
+		cartService.addCart(cart);
+		return "redirect:/user/cart";
+	}
+
+	@GetMapping("/user/carts")
+	public ModelAndView getUserCart(HttpSession session) {
+		ModelAndView mv = new ModelAndView("cartproduct");
+
+		User user = (User) session.getAttribute("user"); //Getting user from session
+		if (user != null) {
+			Cart cart = cartService.getOrCreateCart(user);
+			mv.addObject("products", cart.getProducts()); // Passing products to view
+			System.out.println(cart.getProducts().size());
+		} else {
+			mv.setViewName("redirect:/login");
+		}
+
+		return mv;
+	}
+
+
+	@GetMapping("/user/products/addtocart")
+	public String addToCart(@RequestParam("id") int productId, HttpServletRequest request) {
+		System.out.println("Running @GetMapping(\"/user/products/addtocart\")\n" +
+				"\tpublic String addToCart");
+
+		Product product = productService.getProduct(productId);
+		User user = getUserFromSession(request.getSession());
+
+		if (user == null) {
+			System.out.println("User is null");
+			return "redirect:/user/products";
+		}
+
+		Cart cart = cartService.getOrCreateCart(user);
+
+		System.out.println("Adding to cart");
+		cart.addProduct(product);
+		cartService.updateCart(cart);
+
+		return "redirect:/user/products";
+	}
+
+	@PostMapping("/user/carts/remove")
+	public String removeFromCart(@RequestParam("productId") int productId, HttpSession session, RedirectAttributes redirectAttributes) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			System.out.println("No user found");
+			redirectAttributes.addFlashAttribute("error", "You need to log in to modify the cart");
+			return "redirect:/login";
+		}
+
+		try {
+			cartService.removeProductFromCart(user, productId);
+			redirectAttributes.addFlashAttribute("success", "Product removed from cart");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("error", "There was an issue removing the product from the cart");
+		}
+
+		return "redirect:/user/carts";
+	}
+
+
+	private User getUserFromSession(HttpSession session) {
+		return (User) session.getAttribute("user");
+	}
+
+	private User getUserFromRequest() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated()) {
+			return (User) authentication.getPrincipal();
+		}
+		return null;
+	}
+}
+
+
+
+
 
 
 //	@GetMapping("carts")
@@ -156,4 +277,4 @@ public class UserController{
 //		List<Cart>carts = cartService.getCarts();
 //	}
 	  
-}
+
