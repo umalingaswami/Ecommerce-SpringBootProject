@@ -116,7 +116,7 @@ public class UserController{
 		public String Test(Model model)
 		{
 			System.out.println("test page");
-			model.addAttribute("author","jay gajera");
+			model.addAttribute("author","jay g ajera");
 			model.addAttribute("id",40);
 			
 			List<String> friends = new ArrayList<String>();
