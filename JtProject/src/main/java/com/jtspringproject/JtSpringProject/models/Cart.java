@@ -16,7 +16,7 @@ public class Cart {
     @JoinColumn(name="customer_id")
     private User customer;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
@@ -54,6 +54,7 @@ public class Cart {
 
     public void addProduct(Product product) {
         products.add(product);
+        System.out.println(products.size());
     }
 
     public void removeProduct(Product product) {
