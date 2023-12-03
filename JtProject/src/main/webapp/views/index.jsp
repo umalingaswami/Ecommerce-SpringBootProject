@@ -57,14 +57,14 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <style>
     body {
-      padding: 20px;
+      padding: 10px;
     }
      .card-body {
-          height: 250px; /* Set a fixed height for the card body */
+          height: 320px; /* Set a fixed height for the card body */
         }
 
         .card-img-top {
-          max-height: 100px; /* Limit the height of the product image */
+          max-height: 80px; /* Limit the height of the product image */
           object-fit: contain;
         }
 
@@ -90,7 +90,7 @@
               <h5 class="card-text">Category: ${product.category.name}</h5>
               <h5 class="card-text">Price: ${product.price}</h5>
               <p class="card-text">Description: ${product.description}</p>
-              <a href="/user/products/addtocart?id=${product.id}" class="btn btn-primary">Add to Cart</a>
+              <a href="/user/products/addtocart?id=${product.id}" class="btn btn-primary">Shop Now</a>
 
             </div>
           </div>

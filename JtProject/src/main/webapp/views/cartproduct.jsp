@@ -42,9 +42,9 @@
                         <th>Remove from Cart</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <c:forEach items="${products}" var="product">
-                        <tr>
+                 <tbody>
+                                <c:set var="total" value="0"/>
+                                <c:forEach items="${products}" var="product">
                             <td>${product.id}</td>
                             <td>${product.name}</td>
                             <td>${product.price}</td>
@@ -56,9 +56,13 @@
                                 </form>
                             </td>
                         </tr>
-                    </c:forEach>
-                </tbody>
+                   <c:set var="total" value="${total + product.price}"/>
+          </c:forEach>
+</tbody>
             </table>
+             <div>
+                        <h3>Total Cost: $<c:out value="${total}"/></h3> <!-- Display total -->
+                    </div>
         </div>
 
     <!-- Scripts should be at the end of the body for performance -->
