@@ -81,6 +81,8 @@ public class UserController{
 		return "userLogin";
 	}
 
+
+
 	@GetMapping("/user")
 	public ModelAndView getHomePage() {
 		ModelAndView mv = new ModelAndView("index");
@@ -110,6 +112,23 @@ public class UserController{
 		}
 	}
 
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+
+		SecurityContextHolder.getContext().setAuthentication(null);
+
+		Cookie cookie = new Cookie("username", null);
+		cookie.setMaxAge(0);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+
+		return "redirect:/login";
+	}
+
 
 
 
@@ -128,6 +147,18 @@ public class UserController{
 
 		return mView;
 	}
+
+
+	@GetMapping("/user/products/search")
+	public ModelAndView searchProducts(@RequestParam("searchquery") String query) {
+		ModelAndView mv = new ModelAndView("uproduct");
+
+		List<Product> searchResults = productService.searchProducts(query);
+		mv.addObject("products", searchResults);
+
+		return mv;
+	}
+
 	@RequestMapping(value = "newuserregister", method = RequestMethod.POST)
 	public String newUseRegister(@ModelAttribute User user)
 	{
@@ -190,6 +221,7 @@ public class UserController{
 		System.out.println("Running @PostMapping(\"/user/carts/add\")\n" +
 				"\tpublic String addCart");
 		cartService.addCart(cart);
+
 		return "redirect:/user/cart";
 	}
 
@@ -211,7 +243,7 @@ public class UserController{
 
 
 	@GetMapping("/user/products/addtocart")
-	public String addToCart(@RequestParam("id") int productId, HttpServletRequest request) {
+	public String addToCart(@RequestParam("id") int productId, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		System.out.println("Running @GetMapping(\"/user/products/addtocart\")\n" +
 				"\tpublic String addToCart");
 
@@ -220,7 +252,7 @@ public class UserController{
 
 		if (user == null) {
 			System.out.println("User is null");
-			return "redirect:/user/products";
+			return "redirect:/";
 		}
 
 		Cart cart = cartService.getOrCreateCart(user);
@@ -228,7 +260,7 @@ public class UserController{
 		System.out.println("Adding to cart");
 		cart.addProduct(product);
 		cartService.updateCart(cart);
-
+		redirectAttributes.addFlashAttribute("successMessage", "Product added to cart successfully!");
 		return "redirect:/user/products";
 	}
 

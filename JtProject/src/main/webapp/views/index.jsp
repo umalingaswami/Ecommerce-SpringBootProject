@@ -57,17 +57,28 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <style>
     body {
-      padding: 20px;
+      padding: 10px;
     }
      .card-body {
-          height: 250px; /* Set a fixed height for the card body */
+          height: 320px; /* Set a fixed height for the card body */
         }
 
         .card-img-top {
-          max-height: 100px; /* Limit the height of the product image */
+          max-height: 80px; /* Limit the height of the product image */
           object-fit: contain;
         }
 
+.search-container {
+            margin: 20px 0;
+        }
+        .search-container form {
+            display: flex;
+            width: 100%;
+        }
+        .search-container input[type="search"] {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
   </style>
 </head>
 <body class="bg-light">
@@ -79,6 +90,12 @@
     <div class="container">
       <h1>Welcome to Perishable Shop</h1>
 
+      <div class="search-container">
+                  <form action="/user/products/search" method="get" class="form-inline my-2 my-lg-0">
+                      <input class="form-control mr-sm-2" type="search" placeholder="Search for products" aria-label="Search" name="searchquery">
+                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+              </div>
 
       <div class="row">
       <c:forEach var="product" items="${products}">
@@ -90,7 +107,7 @@
               <h5 class="card-text">Category: ${product.category.name}</h5>
               <h5 class="card-text">Price: ${product.price}</h5>
               <p class="card-text">Description: ${product.description}</p>
-              <a href="/user/products/addtocart?id=${product.id}" class="btn btn-primary">Add to Cart</a>
+              <a href="/user/products/addtocart?id=${product.id}" class="btn btn-primary">Shop Now</a>
 
             </div>
           </div>

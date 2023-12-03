@@ -33,5 +33,9 @@ public class productService {
 		return this.productDao.deletProduct(id);
 	}
 
+	public List<Product> searchProducts(String query) {
+		return productDao.searchProducts(query);
+	}
+
 	
 }

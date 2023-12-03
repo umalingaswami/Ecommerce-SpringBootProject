@@ -55,4 +55,14 @@ public class productDao {
 		return false;
 	}
 
+
+	@Transactional
+	public List<Product> searchProducts(String query) {
+
+		return this.sessionFactory.getCurrentSession()
+				.createQuery("FROM PRODUCT WHERE name LIKE :query OR description LIKE :query")
+				.setParameter("query", "%" + query + "%")
+				.list();
+	}
+
 }
