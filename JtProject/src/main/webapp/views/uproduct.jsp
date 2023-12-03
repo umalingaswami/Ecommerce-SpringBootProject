@@ -34,13 +34,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto"></ul>
                 <ul class="navbar-nav">
-                    <li class="nav-item active"><a class="nav-link" href="/user">Home
-                            Page</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="/user/carts">Cart</a>
-                    <li class="nav-item active"><a class="nav-link" href="/logout">Logout</a>
-                    </li>
+                   <c:if test="${user.role == 'ROLE_ADMIN'}">
+                     <li class="nav-item active"><a class="nav-link" href="/admin/Dashboard">AdminPortal</a></li>
+                   </c:if>
+                    <li class="nav-item active"><a class="nav-link" href="/user">Home Page</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="/user/carts">Cart</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="/logout">Logout</a></li>
                 </ul>
             </div>
+
         </div>
     </nav>
     <div class="container-fluid">

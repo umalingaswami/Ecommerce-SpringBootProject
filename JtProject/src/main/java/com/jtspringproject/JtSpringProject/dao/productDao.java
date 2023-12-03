@@ -13,6 +13,10 @@ import com.jtspringproject.JtSpringProject.models.Product;
 
 @Repository
 public class productDao {
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
 	@Autowired
     private SessionFactory sessionFactory;
 	

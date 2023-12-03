@@ -43,7 +43,8 @@
 
 			</div>
 		</div>
-	</nav><br>
+	</nav>
+	<br>
 
 	<div class="jumbotron container border border-info">
 		<h3>Update Existing Product</h3>

@@ -77,22 +77,23 @@ public class AdminController {
 		return "adminlogin";
 	}
 	@RequestMapping(value = "loginvalidate", method = RequestMethod.POST)
-	public ModelAndView adminlogin( @RequestParam("username") String username, @RequestParam("password") String pass) {
-		
-		User user=this.userService.checkLogin(username, pass);
-		
-		if(user.getRole().equals("ROLE_ADMIN")) {
+	public ModelAndView adminlogin(@RequestParam("username") String username, @RequestParam("password") String pass) {
+		User user = this.userService.checkLogin(username, pass);
+
+		// Check if user exists and has the role 'ROLE_ADMIN'
+		if (user != null && "ROLE_ADMIN".equals(user.getRole())) {
 			ModelAndView mv = new ModelAndView("adminHome");
-			adminlogcheck=1;
+			adminlogcheck = 1;
+			usernameforclass = user.getUsername();
 			mv.addObject("admin", user);
 			return mv;
-		}
-		else {
+		} else {
 			ModelAndView mv = new ModelAndView("adminlogin");
 			mv.addObject("msg", "Please enter correct username and password");
 			return mv;
 		}
 	}
+
 	@GetMapping("categories")
 	public ModelAndView getcategory() {
 		if(adminlogcheck==0){

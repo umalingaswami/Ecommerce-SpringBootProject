@@ -86,6 +86,7 @@ public class UserController{
 	@GetMapping("/user")
 	public ModelAndView getHomePage() {
 		ModelAndView mv = new ModelAndView("index");
+
 		List<Product> products = productService.getProducts();
 		mv.addObject("products", products);
 		return mv;
@@ -169,9 +170,7 @@ public class UserController{
 		
 		return "redirect:/";
 	}
-	
-	
-	
+
 	   //for Learning purpose of model
 		@GetMapping("/test")
 		public String Test(Model model)
