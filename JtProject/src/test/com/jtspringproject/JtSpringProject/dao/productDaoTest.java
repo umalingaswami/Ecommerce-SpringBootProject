@@ -32,7 +32,7 @@ class ProductDaoTest {
 
     @BeforeEach
     void setUp() {
-        when(sessionFactory.getCurrentSession()).thenReturn(session);
+        lenient().when(sessionFactory.getCurrentSession()).thenReturn(session);
     }
 
     @Test
