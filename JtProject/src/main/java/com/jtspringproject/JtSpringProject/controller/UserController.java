@@ -81,6 +81,8 @@ public class UserController{
 		return "userLogin";
 	}
 
+
+
 	@GetMapping("/user")
 	public ModelAndView getHomePage() {
 		ModelAndView mv = new ModelAndView("index");
@@ -108,6 +110,23 @@ public class UserController{
 			redirectAttributes.addFlashAttribute("msg", "Please enter correct email and password");
 			return "redirect:/";
 		}
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+
+		SecurityContextHolder.getContext().setAuthentication(null);
+
+		Cookie cookie = new Cookie("username", null);
+		cookie.setMaxAge(0);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+
+		return "redirect:/login";
 	}
 
 
