@@ -128,6 +128,18 @@ public class UserController{
 
 		return mView;
 	}
+
+
+	@GetMapping("/user/products/search")
+	public ModelAndView searchProducts(@RequestParam("searchquery") String query) {
+		ModelAndView mv = new ModelAndView("uproduct");
+
+		List<Product> searchResults = productService.searchProducts(query);
+		mv.addObject("products", searchResults);
+
+		return mv;
+	}
+
 	@RequestMapping(value = "newuserregister", method = RequestMethod.POST)
 	public String newUseRegister(@ModelAttribute User user)
 	{

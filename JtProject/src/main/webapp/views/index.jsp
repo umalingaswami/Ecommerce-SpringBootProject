@@ -68,6 +68,17 @@
           object-fit: contain;
         }
 
+.search-container {
+            margin: 20px 0;
+        }
+        .search-container form {
+            display: flex;
+            width: 100%;
+        }
+        .search-container input[type="search"] {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
   </style>
 </head>
 <body class="bg-light">
@@ -79,6 +90,12 @@
     <div class="container">
       <h1>Welcome to Perishable Shop</h1>
 
+      <div class="search-container">
+                  <form action="/user/products/search" method="get" class="form-inline my-2 my-lg-0">
+                      <input class="form-control mr-sm-2" type="search" placeholder="Search for products" aria-label="Search" name="searchquery">
+                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+              </div>
 
       <div class="row">
       <c:forEach var="product" items="${products}">
