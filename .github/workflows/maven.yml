@@ -30,7 +30,7 @@ jobs:
 
     # Run the MySQL script
     - name: Run MySQL script
-      run: mysql -h 127.0.0.1 -u root -p1234 your_database_name < JtProject/basedata.sql
+      run: mysql -h 127.0.0.1 -u root -p1234 ecommjava < JtProject/basedata.sql
 
     - name: Set up JDK 17
       uses: actions/setup-java@v3
