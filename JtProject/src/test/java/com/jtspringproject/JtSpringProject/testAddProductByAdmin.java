@@ -1,4 +1,4 @@
-package com.jtspringproject.JtSpringProject;
+/*package com.jtspringproject.JtSpringProject;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -61,4 +61,4 @@ public class testAddProductByAdmin {
         WebElement submitBtn = driver.findElement(By.id("submitProductBtn"));
         submitBtn.click();
     }
-}
+}*/

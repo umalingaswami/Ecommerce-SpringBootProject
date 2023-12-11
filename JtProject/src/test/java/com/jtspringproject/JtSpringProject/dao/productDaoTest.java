@@ -33,7 +33,6 @@ class ProductDaoTest {
     @BeforeEach
     void setUp() {
         lenient().when(sessionFactory.getCurrentSession()).thenReturn(session);
-				assertTrue(false); // TODO remove this later
     }
 
     @Test
