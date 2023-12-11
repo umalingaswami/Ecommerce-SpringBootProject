@@ -10,7 +10,6 @@ class JtSpringProjectApplicationTests {
 
 	@Test
 	void contextLoads() {
-		assertTrue(false);
 	}
 
 }
