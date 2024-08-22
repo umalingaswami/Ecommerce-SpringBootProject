@@ -43,6 +43,12 @@ public class cartProductDao {
                 .createNativeQuery(sql, Product.class)
                 .setParameterList("product_ids", productIds)
                 .list();
+
+        sql2 = "SELECT * FROM product WHERE id IN (:product_ids)";
+        return this.sessionFactory.getCurrentSession()
+                .createNativeQuery(sql2, Product.class)
+                .setParameterList("product_ids", productIds)
+                .list();
     }
 
     @Transactional
@@ -54,4 +60,10 @@ public class cartProductDao {
     public void deleteCartProduct(CartProduct cartProduct) {
         this.sessionFactory.getCurrentSession().delete(cartProduct);
     }
+
+    Trasactional
+    public CartProduct getCartProduct(Integer id) {
+        return (CartProduct) this.sessionFactory.getCurrentSession().get(CartProduct.class, id);
+    }
+
 }
