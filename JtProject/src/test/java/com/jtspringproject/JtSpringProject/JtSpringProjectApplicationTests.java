@@ -8,6 +8,7 @@ class JtSpringProjectApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Empty test to verify Spring context loads
 	}
 
 }

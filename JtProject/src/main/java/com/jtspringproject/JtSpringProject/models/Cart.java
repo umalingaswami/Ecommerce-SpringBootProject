@@ -3,26 +3,22 @@ package com.jtspringproject.JtSpringProject.models;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
-@Entity(name="CART")
-public class Cart {
+@Entity
+public class Cart implements Shoppable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
     @JoinColumn(name="customer_id")
     private User customer;
 
-//    @ManyToMany
-//    @JoinTable(
-//            joinColumns = @JoinColumn(name = "cart_id"),
-//            inverseJoinColumns = @JoinColumn(name = "product_id")
-//    )
-//    private List<Product> products;
-
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public Cart() {
     }
@@ -44,29 +40,35 @@ public class Cart {
         this.customer = customer;
     }
 
-//    public List<Product> getProducts() {
-//        return products;
-//    }
+    @Override
+    public int getPrecio() {
+        return cartItems.stream()
+                     .mapToInt(item -> item.getProduct().getPrecio())
+                     .sum();
+    }
 
-//    public List<Product> getProductsByUser(int customer_id ) {
-//        List<Product> userProducts = new ArrayList<Product>();
-//        for (Product product : products) {
-//            if (product.getCustomer().getId() == customer_id) {
-//                userProducts.add(product);
-//            }
-//        }
-//        return userProducts;
-//    }
+    @Override
+    public String getName() {
+        return "Cart-" + id;
+    }
 
-//    public void setProducts(List<Product> products) {
-//        this.products = products;
-//    }
+    @Override
+    public void add(Shoppable item) {
+        CartItem cartItem = new CartItem();
+        cartItem.setCart(this);
+        cartItem.setProduct((Product)item);
+        cartItems.add(cartItem);
+    }
 
-//    public void addProduct(Product product) {
-//        products.add(product);
-//    }
-//
-//    public void removeProduct(Product product) {
-//        products.remove(product);
-//    }
+    @Override
+    public void remove(Shoppable item) {
+        cartItems.removeIf(cartItem -> cartItem.getProduct().equals(item));
+    }
+
+    @Override
+    public List<Shoppable> getChildren() {
+        return cartItems.stream()
+                     .map(CartItem::getProduct)
+                     .collect(Collectors.toList());
+    }
 }

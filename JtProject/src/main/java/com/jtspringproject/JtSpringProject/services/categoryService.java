@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jtspringproject.JtSpringProject.dao.categoryDao;
 import com.jtspringproject.JtSpringProject.models.Category;
-
-import net.bytebuddy.dynamic.DynamicType.Builder.InnerTypeDefinition;
+import com.jtspringproject.JtSpringProject.services.productService;
 
 @Service
 public class categoryService {
@@ -22,9 +21,9 @@ public class categoryService {
 	public List<Category> getCategories(){
 		return this.categoryDao.getCategories();
 	}
-	
-	public Boolean deleteCategory(int id) {
-		return this.categoryDao.deletCategory(id);
+
+	public void deleteCategory(int id) {
+		this.categoryDao.deleteCategory(id);
 	}
 	
 	public Category updateCategory(int id,String name) {

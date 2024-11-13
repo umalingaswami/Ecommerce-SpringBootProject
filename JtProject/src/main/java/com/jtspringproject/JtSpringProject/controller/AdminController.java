@@ -26,6 +26,7 @@ import com.jtspringproject.JtSpringProject.models.User;
 import com.jtspringproject.JtSpringProject.services.categoryService;
 import com.jtspringproject.JtSpringProject.services.productService;
 import com.jtspringproject.JtSpringProject.services.userService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin")
@@ -86,12 +87,16 @@ public class AdminController {
 			return "redirect:categories";
 		}
 	}
-	
-	@GetMapping("categories/delete")
-	public String removeCategoryDb(@RequestParam("id") int id)
-	{	
+
+	@GetMapping("/categories/delete")
+	public String removeCategoryDb(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+		try {
 			this.categoryService.deleteCategory(id);
-			return "redirect:/admin/categories";
+			redirectAttributes.addFlashAttribute("message", "Category successfully deleted");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("error", "Failed to delete category. It may have associated items.");
+		}
+		return "redirect:/admin/categories";
 	}
 	
 	@GetMapping("categories/update")

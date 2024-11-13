@@ -33,16 +33,19 @@ public class categoryDao {
 	}
 
 	@Transactional
-	public Boolean deletCategory(int id) {
-
+	public void deleteCategory(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		Object persistanceInstance = session.load(Category.class, id);
-
-		if (persistanceInstance != null) {
-			session.delete(persistanceInstance);
-			return true;
+		try {
+			Category category = session.get(Category.class, id);
+			if (category != null) {
+				// Check for and handle any existing relationships first
+				// Clear any associations if needed
+				session.delete(category);
+				session.flush(); // Ensure the delete is executed
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to delete category with ID: " + id, e);
 		}
-		return false;
 	}
 
 	@Transactional

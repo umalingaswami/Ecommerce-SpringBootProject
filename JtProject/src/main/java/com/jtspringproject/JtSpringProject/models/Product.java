@@ -9,20 +9,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import java.util.Collections;
+import java.util.List;
 
 @Entity(name="PRODUCT")
-public class Product {
+public class Product implements Shoppable {
 	@Id
 	@Column(name = "product_id")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	private String name;
 	
 	private String image;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "category_id",referencedColumnName = "category_id")
+
+	@ManyToOne
+	@JoinColumn(name = "category_id")
 	private Category category;
 	
 	private int quantity;
@@ -102,5 +104,23 @@ public class Product {
     @JoinColumn(name = "customer_id")
     private User customer;
 	
-	
+	@Override
+	public int getPrecio() {
+		return this.price;
+	}
+
+	@Override
+	public void add(Shoppable item) {
+		throw new UnsupportedOperationException("Cannot add items to a product");
+	}
+
+	@Override
+	public void remove(Shoppable item) {
+		throw new UnsupportedOperationException("Cannot remove items from a product");
+	}
+
+	@Override
+	public List<Shoppable> getChildren() {
+		return Collections.emptyList();
+	}
 }
