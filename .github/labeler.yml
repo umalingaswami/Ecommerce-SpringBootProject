@@ -1,0 +1,19 @@
+# Add 'frontend' label to any changes in frontend directory
+frontend:
+  - frontend/**/*
+
+# Add 'backend' label to any changes in backend directory
+backend:
+  - src/**/*
+  - pom.xml
+
+# Add 'documentation' label to any markdown files
+documentation:
+  - '**/*.md'
+  - docs/**/*
+
+# Add 'configuration' label to specific config files
+configuration:
+  - .github/**/*
+  - '*.properties'
+  - '*.yml' 
