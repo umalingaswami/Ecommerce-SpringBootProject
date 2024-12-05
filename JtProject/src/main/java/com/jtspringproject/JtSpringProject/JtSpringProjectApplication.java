@@ -1,4 +1,4 @@
-package com.jtspringproject.JtSpringProject;
+package com.jtspringproject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

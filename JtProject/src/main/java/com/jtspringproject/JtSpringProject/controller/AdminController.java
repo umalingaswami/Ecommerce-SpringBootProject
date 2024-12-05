@@ -1,4 +1,4 @@
-package com.jtspringproject.JtSpringProject.controller;
+package com.jtspringproject.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+import com.jtspringproject.modeltest.Category;
+import com.jtspringproject.modeltest.Product;
+import com.jtspringproject.modeltest.User;
+import com.jtspringproject.services.categoryService;
+import com.jtspringproject.services.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,20 +25,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.jtspringproject.JtSpringProject.models.Category;
-import com.jtspringproject.JtSpringProject.models.Product;
-import com.jtspringproject.JtSpringProject.models.User;
-import com.jtspringproject.JtSpringProject.services.categoryService;
-import com.jtspringproject.JtSpringProject.services.productService;
-import com.jtspringproject.JtSpringProject.services.userService;
+import com.jtspringproject.services.productService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
-	private final userService userService;
-	private final categoryService categoryService;
+	private final com.jtspringproject.services.userService userService;
+	private final com.jtspringproject.services.categoryService categoryService;
 	private final productService productService;
 
 	@Autowired

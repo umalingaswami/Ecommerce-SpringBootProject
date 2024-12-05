@@ -1,19 +1,17 @@
-package com.jtspringproject.JtSpringProject.services;
+package com.jtspringproject.services;
 
 import com.jtspringproject.JtSpringProject.models.*;
 import java.util.List;
 
+import com.jtspringproject.modeltest.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.jtspringproject.JtSpringProject.dao.userDao;
-import com.jtspringproject.JtSpringProject.models.User;
-
 @Service
 public class userService {
 	@Autowired
-	private userDao userDao;
+	private com.jtspringproject.dao.userDao userDao;
 	
 	public List<User> getUsers(){
 		return this.userDao.getAllUser();

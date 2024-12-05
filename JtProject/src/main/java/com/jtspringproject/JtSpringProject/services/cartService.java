@@ -1,8 +1,6 @@
-package com.jtspringproject.JtSpringProject.services;
+package com.jtspringproject.services;
 
-import com.jtspringproject.JtSpringProject.dao.cartDao;
-import com.jtspringproject.JtSpringProject.models.Cart;
-import com.jtspringproject.JtSpringProject.models.Category;
+import com.jtspringproject.modeltest.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +9,7 @@ import java.util.List;
 @Service
 public class cartService {
     @Autowired
-    private cartDao cartDao;
+    private com.jtspringproject.dao.cartDao cartDao;
 
     public Cart addCart(Cart cart) {
         return cartDao.addCart(cart);

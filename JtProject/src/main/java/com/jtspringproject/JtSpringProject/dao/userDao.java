@@ -1,18 +1,14 @@
-package com.jtspringproject.JtSpringProject.dao;
+package com.jtspringproject.dao;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
-import javax.sound.midi.Soundbank;
-
+import com.jtspringproject.modeltest.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.jtspringproject.JtSpringProject.models.User;
 
 
 @Repository

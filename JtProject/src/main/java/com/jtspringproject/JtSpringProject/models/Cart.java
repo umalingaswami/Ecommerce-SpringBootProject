@@ -1,4 +1,4 @@
-package com.jtspringproject.JtSpringProject.models;
+package com.jtspringproject.modeltest;
 
 import javax.persistence.*;
 import java.util.ArrayList;

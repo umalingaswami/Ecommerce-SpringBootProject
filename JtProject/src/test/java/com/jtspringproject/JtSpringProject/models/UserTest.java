@@ -1,6 +1,5 @@
-package com.jtspringproject.JtSpringProject.models;
+package com.jtspringproject.modeltest;
 
-import com.jtspringproject.JtSpringProject.models.User;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

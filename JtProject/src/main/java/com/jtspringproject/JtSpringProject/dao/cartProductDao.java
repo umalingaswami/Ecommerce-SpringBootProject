@@ -1,8 +1,7 @@
-package com.jtspringproject.JtSpringProject.dao;
+package com.jtspringproject.dao;
 
-import com.jtspringproject.JtSpringProject.models.Cart;
-import com.jtspringproject.JtSpringProject.models.CartProduct;
-import com.jtspringproject.JtSpringProject.models.Product;
+import com.jtspringproject.modeltest.CartProduct;
+import com.jtspringproject.modeltest.Product;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

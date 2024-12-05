@@ -1,17 +1,15 @@
-package com.jtspringproject.JtSpringProject.services;
+package com.jtspringproject.services;
 
 import java.util.List;
 
+import com.jtspringproject.modeltest.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.jtspringproject.JtSpringProject.dao.productDao;
-import com.jtspringproject.JtSpringProject.models.Product;
 
 @Service
 public class productService {
 	@Autowired
-	private productDao productDao;
+	private com.jtspringproject.dao.productDao productDao;
 	
 	public List<Product> getProducts(){
 		return this.productDao.getProducts();
