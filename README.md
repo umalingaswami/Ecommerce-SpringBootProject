@@ -2,7 +2,7 @@
 - https://github.com/jaygajera17/E-commerce-project-springBoot/tree/main
 - issue: everytime connection open close for access database 
 
-## New Upgrade ( what's new)
+## New Version ( what's new)
 - Hibernate configuration added( database and tables automatically create when run the project)
 - Service classes provide reusable services throughout project
 - dao classes interact with database 
@@ -29,8 +29,10 @@
 
 ### Database
 
-MySQL or MariaDB can be used as the database for this project. The database connection can be configured in the `application.properties` file, with the appropriate values for the following properties:
-(you'd better use another username not root)
+MySQL or MariaDB can be used as the database for this project. The database connection can be configured in the `src/main/resources/application.properties` file, with the appropriate values for the following properties:
+
+**( You'd better use another username not root, and ensure that the user has the corresponding permissions for the database. )**
+
 ```properties
     db.url=jdbc:mysql://[ip address of db]:[port of db]/ecommjava?createDatabaseIfNotExist=true
     db.username=[username]
