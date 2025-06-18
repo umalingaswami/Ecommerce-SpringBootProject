@@ -17,7 +17,7 @@
 <div class="container">
     <div class="col-sm-6">
         <h3 style="margin-top: 10px">Sign Up Now</h3>
-        <p>Please fill out this to register</p>
+        <p>Please fill out this to registers</p>
         <form action="newuserregister" method="post">
             <div class="form-group">
                 <label for="firstName">User Name</label>
@@ -39,7 +39,7 @@
                 <label for="Address">Address</label>
                 <textarea class="form-control form-control-lg" rows="3" placeholder="Enter Your Address" name="address"></textarea>
             </div>
-<span style="margin-top: 10px">Already have an account <a class="linkControl" href="/">Login here</a></span> <br><br>
+<span style="margin-top: 10px">Already have an account <a class="linkControl" href="/">Login heres</a></span> <br><br>
             <input type="submit" value="Register" class="btn btn-primary btn-block"><br>
             <br><h3 style="color:red;">${msg}</h3>
             <br>
