@@ -13,7 +13,7 @@
 	href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
 	integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
 	crossorigin="anonymous">
-<title>Document</title>
+<title>Documents</title>
 </head>
 
 <body class="bg-dark">
@@ -44,7 +44,7 @@
 	</nav>
 	<div class="jumbotron text-center">
 		<h1 class="display-4">Welcome Back, Admin</h1><hr>
-		<p>Manage your data from this Admin Panel</p>
+		<p>Welcome to Naveen Page</p>
 	</div><br>
 	<div class="container-fluid" >
 		<div class="row justify-content-center">
