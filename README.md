@@ -31,7 +31,7 @@ ineed eggs
      * Username: `lisa`
      * Password: `765`
 
-### Database
+### Database:
 
 MySQL or MariaDB can be used as the database for this project. The database connection can be configured in the `src/main/resources/application.properties` file, with the appropriate values for the following properties:
 
