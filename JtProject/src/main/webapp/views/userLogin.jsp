@@ -65,7 +65,7 @@
                     <input type="password" class="form-control form-control-lg" placeholder="Password*" required name="password" id="password">
                 </div>
             </div>
-            <span>Don't have an account? <a class="linkControl" href="/register">Register here</a></span> <br><br>
+            <span>Don't have an accounts? <a class="linkControl" href="/register">Register here</a></span> <br><br>
             <input type="submit" value="Login" class="btn btn-primary btn-block">
             <h3 class="text-center text-danger mt-3">${msg}</h3>
         </form>
