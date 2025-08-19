@@ -2,23 +2,25 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <title>Document</title>
+    <title>Register</title>
 </head>
 <body>
 
-<br>
 <div class="container">
     <div class="col-sm-6">
         <h3 style="margin-top: 10px">Sign Up Now</h3>
         <p>Please fill out this to register</p>
         <form action="newuserregister" method="post">
+            <!-- CSRF Token -->
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="form-group">
                 <label for="firstName">User Name</label>
                 <input type="text" name="username" id="firstName" required placeholder="Your Username*" required class="form-control form-control-lg">

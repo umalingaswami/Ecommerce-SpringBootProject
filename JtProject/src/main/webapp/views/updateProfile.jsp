@@ -19,6 +19,8 @@
         <h3 style="margin-top: 10px">User Profile</h3>
         <br>
         <form action="updateuser" method="post">
+            <!-- CSRF Token -->
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="form-group">
                 <label for="firstName">User Name</label>
                 <input type="hidden" name="userid" value="${userid }">

@@ -1,10 +1,16 @@
 package com.jtspringproject.JtSpringProject.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jtspringproject.JtSpringProject.models.Category;
@@ -126,7 +133,13 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "products/add",method=RequestMethod.POST)
-	public String addProduct(@RequestParam("name") String name,@RequestParam("categoryid") int categoryId ,@RequestParam("price") int price,@RequestParam("weight") int weight, @RequestParam("quantity")int quantity,@RequestParam("description") String description,@RequestParam("productImage") String productImage) {
+	public String addProduct(@RequestParam("name") String name,
+							@RequestParam("categoryid") int categoryId,
+							@RequestParam("price") int price,
+							@RequestParam("weight") int weight, 
+							@RequestParam("quantity") int quantity,
+							@RequestParam("description") String description,
+							@RequestParam(value = "productImage", required = false) MultipartFile productImage) {
 		System.out.println(categoryId);
 		Category category = this.categoryService.getCategory(categoryId);
 		Product product = new Product();
@@ -135,9 +148,38 @@ public class AdminController {
 		product.setCategory(category);
 		product.setDescription(description);
 		product.setPrice(price);
-		product.setImage(productImage);
 		product.setWeight(weight);
 		product.setQuantity(quantity);
+		
+		// Handle image upload
+		if (productImage != null && !productImage.isEmpty()) {
+			try {
+				// Create uploads directory if it doesn't exist
+				String uploadDir = "src/main/resources/static/uploads/";
+				File dir = new File(uploadDir);
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+				
+				// Generate unique filename
+				String originalFilename = productImage.getOriginalFilename();
+				String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+				String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
+				
+				// Save file
+				Path filePath = Paths.get(uploadDir + uniqueFilename);
+				Files.write(filePath, productImage.getBytes());
+				
+				// Set image path
+				product.setImage("/uploads/" + uniqueFilename);
+			} catch (IOException e) {
+				System.err.println("Error saving image: " + e.getMessage());
+				product.setImage("Product Images/one.jpg"); // Default image
+			}
+		} else {
+			product.setImage("Product Images/one.jpg"); // Default image
+		}
+		
 		this.productService.addProduct(product);
 		return "redirect:/admin/products";
 	}
@@ -155,10 +197,61 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "products/update/{id}",method=RequestMethod.POST)
-	public String updateProduct(@PathVariable("id") int id ,@RequestParam("name") String name,@RequestParam("categoryid") int categoryId ,@RequestParam("price") int price,@RequestParam("weight") int weight, @RequestParam("quantity")int quantity,@RequestParam("description") String description,@RequestParam("productImage") String productImage)
-	{
-
-//		this.productService.updateProduct();
+	public String updateProduct(@PathVariable("id") int id,
+							   @RequestParam("name") String name,
+							   @RequestParam("categoryid") int categoryId,
+							   @RequestParam("price") int price,
+							   @RequestParam("weight") int weight, 
+							   @RequestParam("quantity") int quantity,
+							   @RequestParam("description") String description,
+							   @RequestParam(value = "productImage", required = false) MultipartFile productImage,
+							   @RequestParam("imgName") String currentImagePath) {
+		
+		// Get existing product
+		Product existingProduct = this.productService.getProduct(id);
+		if (existingProduct == null) {
+			return "redirect:/admin/products";
+		}
+		
+		// Update product fields
+		existingProduct.setName(name);
+		existingProduct.setCategory(this.categoryService.getCategory(categoryId));
+		existingProduct.setDescription(description);
+		existingProduct.setPrice(price);
+		existingProduct.setWeight(weight);
+		existingProduct.setQuantity(quantity);
+		
+		// Handle image upload
+		if (productImage != null && !productImage.isEmpty()) {
+			try {
+				// Create uploads directory if it doesn't exist
+				String uploadDir = "src/main/resources/static/uploads/";
+				File dir = new File(uploadDir);
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+				
+				// Generate unique filename
+				String originalFilename = productImage.getOriginalFilename();
+				String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+				String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
+				
+				// Save file
+				Path filePath = Paths.get(uploadDir + uniqueFilename);
+				Files.write(filePath, productImage.getBytes());
+				
+				// Set new image path
+				existingProduct.setImage("/uploads/" + uniqueFilename);
+			} catch (IOException e) {
+				System.err.println("Error saving image: " + e.getMessage());
+				// Keep existing image if upload fails
+			}
+		} else {
+			// Keep existing image if no new image uploaded
+			existingProduct.setImage(currentImagePath);
+		}
+		
+		this.productService.updateProduct(id, existingProduct);
 		return "redirect:/admin/products";
 	}
 	

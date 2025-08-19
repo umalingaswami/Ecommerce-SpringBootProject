@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!doctype html>
-<%@page import="java.sql.*"%>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
@@ -18,12 +17,12 @@
 	crossorigin="anonymous">
 <title>Document</title>
 </head>
-<body>
+<body class="bg-light">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#"> <img
-				th:src="@{/images/logo.png}" src="../static/images/logo.png"
-				width="auto" height="40" class="d-inline-block align-top" alt="" />
+			<a class="navbar-brand" href="#"> <img src="@{/images/logo.png}"
+				src="../static/images/logo.png" width="auto" height="40"
+				class="d-inline-block align-top" alt="" />
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarSupportedContent"
@@ -46,7 +45,9 @@
 	</nav><br>
 	<div class="jumbotron container border border-info">
 		<h3>Update Existing Product</h3>
-		<form action="/admin/products/update/${product.id}" method="post">
+		<form action="/admin/products/update/${product.id}" method="post" enctype="multipart/form-data">
+			<!-- CSRF Token -->
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<div class="row">
 				<div class="col-sm-5">
 					
@@ -64,11 +65,11 @@
 					<div class="form-group">
 					
 						<label for="category">Select Category</label> 
-						<select class="form-control border border-success" name="categoryid" readonly>
-							<option selected>Select a Category</option>
-                            							<c:forEach var="category" items="${categories}">
-                            								<option value="${category.id}">${category.name}</option>
-                            							</c:forEach>
+						<select class="form-control border border-success" name="categoryid" required>
+							<option value="">Select a Category</option>
+                            <c:forEach var="category" items="${categories}">
+                                <option value="${category.id}" ${category.id == product.category.id ? 'selected' : ''}>${category.name}</option>
+                            </c:forEach>
 						</select>
 					</div>
 					<div class="form-group">
@@ -90,24 +91,19 @@
 				<div class="col-sm-5">
 				<div class="form-group">
 						<label for="description">Product Description</label>
-						<textarea class="form-control border border-success" rows="4" name="description" placeholder="Product Details" value= "${ pdescription }"></textarea>
+						<textarea class="form-control border border-success" rows="4" name="description" placeholder="Product Details">${product.description}</textarea>
 					</div>
 					<p>Product Image</p>
 					<div class="custom-file">
-						<input type="file" class="custom-file-input" name="productImage" value="${ product.image }" accept="image/jpeg, image/png" id="productImage"  onchange="loadfile(event)"/>
+						<input type="file" class="custom-file-input" name="productImage" accept="image/jpeg, image/png" id="productImage" onchange="loadFile(event)"/>
 						<label class="custom-file-label border border-success" for="productImage">Choose file</label>
-						<script type="text/javascript">
-						var loadFile = function(event) {
-							var image = document.getElementById('imgPreview');
-							image.src = URL.createObjectURL(event.target.files[0]);
-						};
-						</script>
 					</div>
 					<div class="form-group">
-						<img src="#" id="imgPreview" height="100px" width="100px"
-							style="margin-top: 20px" alt=" ">
+						<label>Current Image:</label>
+						<img src="${product.image}" id="imgPreview" height="100px" width="100px"
+							style="margin-top: 20px; border: 1px solid #ddd;" alt="Current Product Image">
 					</div>
-					<input type="hidden" name="imgName">
+					<input type="hidden" name="imgName" value="${product.image}">
 					<input type="submit" value="Update Details" class="btn btn-primary">
 				</div>
 			</div>
@@ -125,5 +121,11 @@
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 		crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		var loadFile = function(event) {
+			var image = document.getElementById('imgPreview');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+	</script>
 </body>
 </html>

@@ -6,7 +6,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -18,9 +17,11 @@ import com.jtspringproject.JtSpringProject.services.userService;
 public class SecurityConfiguration {
 	
 	userService UserService;
+	private final PasswordEncoder passwordEncoder;
 
-	public SecurityConfiguration(userService UserService) {
+	public SecurityConfiguration(userService UserService, PasswordEncoder passwordEncoder) {
 		this.UserService = UserService;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Configuration
@@ -49,8 +50,10 @@ public class SecurityConfiguration {
                             .deleteCookies("JSESSIONID"))
                     .exceptionHandling(exception -> exception
                             .accessDeniedPage("/403")  // Custom 403 page
-                        );
-            http.csrf(csrf -> csrf.disable());
+                        )
+                    .csrf(csrf -> csrf
+                            .ignoringRequestMatchers(new AntPathRequestMatcher("/admin/loginvalidate")) // Allow login without CSRF
+                            .csrfTokenRepository(new org.springframework.security.web.csrf.CookieCsrfTokenRepository()));
 			return http.build();
 		}
 	}
@@ -63,6 +66,7 @@ public class SecurityConfiguration {
 		SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
             http.authorizeHttpRequests(requests -> requests
             		.antMatchers("/login", "/register", "/newuserregister" ,"/test", "/test2").permitAll()
+                    .antMatchers("/favicon.ico", "/logo.png", "/css/**", "/js/**", "/images/**", "/static/**", "/admin/images/**").permitAll()
                     .antMatchers("/**").hasRole("USER"))
                     .formLogin(login -> login
                             .loginPage("/login")
@@ -79,9 +83,11 @@ public class SecurityConfiguration {
                             .deleteCookies("JSESSIONID"))
                     .exceptionHandling(exception -> exception
                             .accessDeniedPage("/403")  // Custom 403 page
-                        );
+                        )
+                    .csrf(csrf -> csrf
+                            .ignoringRequestMatchers(new AntPathRequestMatcher("/userloginvalidate")) // Allow login without CSRF
+                            .csrfTokenRepository(new org.springframework.security.web.csrf.CookieCsrfTokenRepository()));
 
-            http.csrf(csrf -> csrf.disable());
 			return http.build();
 		}
 	}
@@ -97,15 +103,10 @@ public class SecurityConfiguration {
 			
 			return org.springframework.security.core.userdetails.User
 					.withUsername(username)
-					.passwordEncoder(input->passwordEncoder().encode(input))
+					.passwordEncoder(input->passwordEncoder.encode(input))
 					.password(user.getPassword())
 					.roles(role)
 					.build();
 		};
-	}
-
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 }
