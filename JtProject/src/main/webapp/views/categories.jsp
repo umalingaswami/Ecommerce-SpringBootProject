@@ -61,6 +61,8 @@
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<form action="categories" method="post">
+						<!-- CSRF Token -->
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						<div class="modal-header">
 							<h5 class="modal-title" id="exampleModalLongTitle">Add New
 								Category</h5>

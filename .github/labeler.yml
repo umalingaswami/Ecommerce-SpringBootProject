@@ -1,0 +1,61 @@
+# GitHub Labeler Configuration
+# Automatically labels PRs based on file changes
+
+# Security-related changes
+security:
+  - '**/SecurityConfiguration.java'
+  - '**/security/**'
+  - '**/SECURITY_IMPROVEMENTS.md'
+  - '**/PasswordEncoderConfig.java'
+  - '**/PasswordMigrationUtil.java'
+
+# Frontend/UI changes
+frontend:
+  - '**/*.jsp'
+  - '**/*.html'
+  - '**/*.css'
+  - '**/*.js'
+  - '**/static/**'
+
+# Backend/API changes
+backend:
+  - '**/*.java'
+  - '**/application.properties'
+  - '**/pom.xml'
+
+# Database changes
+database:
+  - '**/*.sql'
+  - '**/basedata.sql'
+  - '**/models/**'
+
+# Documentation
+documentation:
+  - '**/*.md'
+  - '**/README.md'
+  - '**/PR_SUMMARY.md'
+
+# Configuration files
+config:
+  - '**/application.properties'
+  - '**/application.yml'
+  - '**/pom.xml'
+  - '**/.github/**'
+
+# Bug fixes
+bug:
+  - '**/fix/**'
+  - '**/bug/**'
+  - '**/patch/**'
+
+# New features
+enhancement:
+  - '**/feature/**'
+  - '**/new/**'
+  - '**/add/**'
+
+# Dependencies
+dependencies:
+  - '**/pom.xml'
+  - '**/package.json'
+  - '**/requirements.txt' 
