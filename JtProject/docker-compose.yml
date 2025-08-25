@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # The MySQL Database Service
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    
+    volumes:
+      - mysql-data:/var/lib/mysql
+      
+      - ./basedata.sql:/docker-entrypoint-initdb.d/basedata.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=your-secret-password
+      - MYSQL_DATABASE=ecommjava
+    ports:
+      - "3306:3306"
+
+  
+  app:
+    
+    build: .
+    container_name: spring-boot-app
+    
+    depends_on:
+      - db
+    ports:
+      - "8081:8080"
+    
+    environment:
+      - db.url=jdbc:mysql://db:3306/ecommjava?createDatabaseIfNotExist=true
+      - db.username=root
+      - db.password=your-secret-password
+      - spring.mvc.view.prefix=/views/
+      - spring.mvc.view.suffix=.jsp
+
+volumes:
+  mysql-data:
