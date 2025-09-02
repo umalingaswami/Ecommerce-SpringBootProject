@@ -35,7 +35,7 @@ public class AdminController {
 	private final categoryService categoryService;
 	private final productService productService;
 
-	@Autowired
+	
 	public AdminController(userService userService, categoryService categoryService, productService productService) {
 		this.userService = userService;
 		this.categoryService = categoryService;
