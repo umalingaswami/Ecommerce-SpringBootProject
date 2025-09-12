@@ -1,17 +1,14 @@
 package com.jtspringproject.JtSpringProject.models;
-import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Entity(name="CUSTOMER")
-@Table
+@Entity
+@Table(name="customers")
 public class User {
 
 	@Id
@@ -77,7 +74,19 @@ public class User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	public User(int id, String username, String email, String password, String role, String address) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.address = address;
+	}
 	
-	 
+	public User() {
+		super();
+	}
 
 }

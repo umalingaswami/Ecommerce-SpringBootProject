@@ -1,10 +1,11 @@
 package com.jtspringproject.JtSpringProject.models;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+@SuppressWarnings("serial")
 @Embeddable
 public class CartProductId implements Serializable {
 
