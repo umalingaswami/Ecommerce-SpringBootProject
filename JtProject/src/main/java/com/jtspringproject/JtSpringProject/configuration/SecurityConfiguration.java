@@ -62,18 +62,9 @@ public class SecurityConfiguration {
 		@Bean
 		SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
             http.authorizeHttpRequests(requests -> requests
-            		.antMatchers("/login", "/register", "/newuserregister" ,"/test", "/test2").permitAll()
-                    .antMatchers("/**").hasRole("USER"))
-                    .formLogin(login -> login
-                            .loginPage("/login")
-                            .loginProcessingUrl("/userloginvalidate")
-                            .successHandler((request, response, authentication) -> {
-                                response.sendRedirect("/"); // Redirect on success
-                            })
-                            .failureHandler((request, response, exception) -> {
-                                response.sendRedirect("/login?error=true"); // Redirect on failure
-                            }))
-                    
+            		.antMatchers("/login", "/register", "/newuserregister", "/userloginvalidate"
+ ,"/test", "/test2").permitAll())
+//                    .antMatchers("/**").hasRole("USER"))
                     .logout(logout -> logout.logoutUrl("/logout")
                             .logoutSuccessUrl("/login")
                             .deleteCookies("JSESSIONID"))
@@ -103,7 +94,6 @@ public class SecurityConfiguration {
 					.build();
 		};
 	}
-
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
