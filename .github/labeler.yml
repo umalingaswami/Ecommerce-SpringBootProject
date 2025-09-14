@@ -1,0 +1,16 @@
+backend:
+  - 'JtProject/src/main/java/**'
+
+frontend:
+  - 'JtProject/src/main/resources/static/**'
+
+views:
+  - 'JtProject/src/main/resources/templates/**'
+
+config:
+  - 'JtProject/src/main/resources/application.properties'
+  - 'JtProject/src/main/resources/META-INF/**'
+
+security:
+  - 'JtProject/src/main/java/com/jtspringproject/JtSpringProject/configuration/**'
+  - 'JtProject/src/main/java/com/jtspringproject/JtSpringProject/models/User.java'

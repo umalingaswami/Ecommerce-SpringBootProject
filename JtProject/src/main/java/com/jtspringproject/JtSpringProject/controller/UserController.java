@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.jtspringproject.JtSpringProject.services.cartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,17 +28,20 @@ import org.springframework.web.servlet.ModelAndView;
 import com.jtspringproject.JtSpringProject.services.userService;
 import com.jtspringproject.JtSpringProject.services.productService;
 import com.jtspringproject.JtSpringProject.services.cartService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 
 @Controller
 public class UserController{
 
 	private final userService userService;
 	private final productService productService;
-
-	@Autowired
-	public UserController(userService userService, productService productService) {
+private final PasswordEncoder  passwordencoder;
+	public UserController(userService userService, productService productService,PasswordEncoder passwordencoder) {
 		this.userService = userService;
 		this.productService = productService;
+		this.passwordencoder=passwordencoder;
 	}
 
 	@GetMapping("/register")
@@ -53,6 +58,7 @@ public class UserController{
 
 	@GetMapping("/login")
 	public ModelAndView userlogin(@RequestParam(required = false) String error) {
+		
 	    ModelAndView mv = new ModelAndView("userLogin");
 	    if ("true".equals(error)) {
 	        mv.addObject("msg", "Please enter correct email and password");
@@ -65,6 +71,8 @@ public class UserController{
 	{
 		ModelAndView mView  = new ModelAndView("index");	
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		   System.out.println( "home page"+username);
+
 		mView.addObject("username", username);
 		List<Product> products = this.productService.getProducts();
 
@@ -92,6 +100,37 @@ public class UserController{
 		return mView;
 	}
 	
+	
+	   @PostMapping("/userloginvalidate")
+	    public ModelAndView userLoginValidate(@RequestParam String username,
+	                                          @RequestParam String password) {
+		   System.out.println(username);
+		   System.out.println(password);
+
+	        User user = userService.getUserByUsername(username);
+			   System.out.println(user.getUsername());
+  
+	        ModelAndView mv = new ModelAndView();
+	        if (user != null && passwordencoder.matches(password, user.getPassword())) {
+	            // Login successful
+	            // Optionally, manually set authentication in Spring Security context
+	            Authentication auth = new UsernamePasswordAuthenticationToken(
+	                    user.getUsername(),
+	                    null,
+	                    List.of(new SimpleGrantedAuthority(user.getRole().replace("ROLE_", "")))
+	            );
+	            SecurityContextHolder.getContext().setAuthentication(auth);
+
+	            mv.setViewName("redirect:/"); // redirect to home page
+	        } else {
+	            // Login failed
+	            mv.setViewName("userLogin");
+	            mv.addObject("msg", "Invalid username or password");
+	        }
+	        return mv;
+	    }
+	
+	
 	@RequestMapping(value = "newuserregister", method = RequestMethod.POST)
 	public ModelAndView newUseRegister(@ModelAttribute User user)
 	{
@@ -101,6 +140,7 @@ public class UserController{
 		if(!exists) {
 			System.out.println(user.getEmail());
 			user.setRole("ROLE_NORMAL");
+			user.setPassword(passwordencoder.encode( user.getPassword()));
 			this.userService.addUser(user);
 
 			System.out.println("New user created: " + user.getUsername());
