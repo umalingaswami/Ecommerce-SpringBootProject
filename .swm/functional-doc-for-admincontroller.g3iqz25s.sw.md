@@ -1,5 +1,5 @@
 ---
-title: Functional doc for UserController
+title: Functional doc for  AdminController
 ---
 # explain about this document
 
