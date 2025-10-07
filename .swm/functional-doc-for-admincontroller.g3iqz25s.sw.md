@@ -349,6 +349,6 @@ flowchart LR
     DeleteCategory --> CategoriesPage
 ```
 
-This document captures the core business processes and rules extracted from the codebase, focusing on user and admin interactions with authentication, profile, categories, products, and customer data. It avoids technical jargon and validation details in business rules, providing a clear view for business stakeholders.
+This document captures the core business processes and rules extracted from the codebase, focusing on user and admin interactions with authentication, profile, categories, products, and customer data. It avoids technical jargon and validation details in business rules, providing a clear view for business stakeholders.&nbsp;
 
 <SwmMeta version="3.0.0" repo-id="Z2l0aHViJTNBJTNBRWNvbW1lcmNlLVNwcmluZ0Jvb3RQcm9qZWN0JTNBJTNBdW1hbGluZ2Fzd2FtaQ==" repo-name="Ecommerce-SpringBootProject"><sup>Powered by [Swimm](https://app.swimm.io/)</sup></SwmMeta>
